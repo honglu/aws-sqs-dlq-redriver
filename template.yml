@@ -4,18 +4,15 @@ Transform: AWS::Serverless-2016-10-31
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: aws-sqs-dlq-redriver
-    Description: This serverless application... TODO
+    Description: This serverless application redrives the messages from an SQS DLQ back to its main SQS queue.
     Author: Lu Hong
-    # SPDX License Id, e.g., MIT, MIT-0, Apache-2.0. See https://spdx.org/licenses for more details
-    SpdxLicenseId: TODO
+    SpdxLicenseId: MIT
     # paths are relative to .aws-sam/build directory
     LicenseUrl: ../../LICENSE
     ReadmeUrl: ../../README.md
     Labels: [serverless]
     HomePageUrl: https://github.com/honglu/aws-sqs-dlq-redriver
-    # Update the semantic version and run sam publish to publish a new version of your app
     SemanticVersion: 0.0.1
-    # best practice is to use git tags for each release and link to the version tag as your source code URL
     SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/0.0.1
 
 Parameters:
