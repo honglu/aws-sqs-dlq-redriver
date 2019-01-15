@@ -1,6 +1,6 @@
-# aws-sqs-dlq-redriver
+# aws-sqs-dlq-redriver ![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiYys5THI3OU1Pc3BIUjc0TWV2aGRFaG1nVCtCZ1ZHYVJpcWtnUVBqSWU0bEFldkVPd2Y5c1pzQUo0NzVEZlpCZWtMOEp1VVByRmZPT2dpWnVYU3RtMkJNPSIsIml2UGFyYW1ldGVyU3BlYyI6IlluaFA0SERpdWdQaFNFOHQiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
-This serverless app... TODO
+This serverless app redrives the messages from an SQS DLQ (Dead Letter Queue) back to its source queue. This is helpful when you fix the bug that was causing the messages ending up in DLQ and you need to put the messages back to process.
 
 ## App Architecture
 
@@ -15,13 +15,12 @@ TODO: arch diagram
 ## App Parameters
 
 1. `LogLevel` (optional) - Log level for Lambda function logging, e.g., ERROR, INFO, DEBUG, etc. Default: INFO
-1. ...
 
 ## App Outputs
 
-1. `MyFunctionName` - My Lambda function name.
-1. ...
+1. `SQSDLQRedriverName` - SQS DLQ Redriver Lambda function name.
+1. `SQSDLQRedriverArn` - SQS DLQ Redriver Lambda function ARN.
 
 ## License Summary
 
-This code is made available under the TODO license. See the LICENSE file.
+This code is made available under the MIT license. See the LICENSE file.

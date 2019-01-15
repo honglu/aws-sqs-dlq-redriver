@@ -4,13 +4,13 @@ Transform: AWS::Serverless-2016-10-31
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: aws-sqs-dlq-redriver
-    Description: This serverless application redrives the messages from an SQS DLQ back to its main SQS queue.
+    Description: This serverless application redrives the messages from an SQS DLQ back to its source SQS queue.
     Author: Lu Hong
     SpdxLicenseId: MIT
     # paths are relative to .aws-sam/build directory
     LicenseUrl: ../../LICENSE
     ReadmeUrl: ../../README.md
-    Labels: [serverless]
+    Labels: [serverless, SQS]
     HomePageUrl: https://github.com/honglu/aws-sqs-dlq-redriver
     SemanticVersion: 0.0.1
     SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/0.0.1
@@ -22,7 +22,7 @@ Parameters:
     Default: INFO
 
 Resources:
-  MyFunction:
+  SQSDLQRedriver:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
@@ -30,24 +30,25 @@ Resources:
       Runtime: python3.7
       Tracing: Active
       Timeout: 60
+      MemorySize: 768
       Environment:
         Variables:
           LOG_LEVEL: !Ref LogLevel
-          TABLE_NAME: !Ref MyTable
-
-  MyTable:
-    Type: AWS::Serverless::SimpleTable
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - sqs:ReceiveMessage
+            - sqs:SendMessage
+            - sqs:DeleteMessage
+            - sqs:ListDeadLetterSourceQueues
+            Resource: !Sub 'arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:*'
 
 Outputs:
-  MyFunctionName:
-    Description: "Lambda Function Name"
-    Value: !Ref MyFunction
-  MyFunctionArn:
-    Description: "Lambda Function ARN"
-    Value: !GetAtt MyFunction.Arn
-  MyTableName:
-    Description: "Table Name"
-    Value: !Ref MyTable
-  MyTableArn:
-    Description: "Table ARN"
-    Value: !GetAtt MyTable.Arn
+  SQSDLQRedriverName:
+    Description: "SQS DLQ Redriver Lambda Function Name"
+    Value: !Ref SQSDLQRedriver
+  SQSDLQRedriverArn:
+    Description: "SQS DLQ Redriver Lambda Function ARN"
+    Value: !GetAtt SQSDLQRedriver.Arn
