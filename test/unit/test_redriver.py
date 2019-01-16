@@ -66,3 +66,27 @@ def test_redrive(mock_sqs_helper):
     }])
 
 
+def test_redrive_no_message_attributes(mock_sqs_helper):
+    dlq_url = 'mydlq'
+    max_message_count = 10
+    source_queue = 'mySource'
+    mock_sqs_helper.get_source_queues.return_value = [source_queue]
+    mock_sqs_helper.receive_messages.side_effect = [[{
+        'MessageId': 'myId',
+        'Body': 'This is my message',
+        'ReceiptHandle': 'myHandle'
+    }], []]
+    redriver.redrive({'DLQUrl': dlq_url, 'MaxMessageCount': max_message_count}, None)
+
+    mock_sqs_helper.get_source_queues.assert_called_once_with(dlq_url)
+    mock_sqs_helper.receive_messages.assert_has_calls([call(dlq_url, max_message_count), call(dlq_url, max_message_count - 1)])
+    mock_sqs_helper.send_messages.assert_called_once_with(source_queue, [{
+        'Id': 'myId',
+        'MessageBody': 'This is my message'
+    }])
+    mock_sqs_helper.delete_messages.assert_called_once_with(dlq_url, [{
+        'Id': 'myId',
+        'ReceiptHandle': 'myHandle'
+    }])
+
+

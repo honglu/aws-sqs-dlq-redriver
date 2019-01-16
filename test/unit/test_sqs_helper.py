@@ -15,7 +15,8 @@ def test_receive_messages(mock_sqs):
     mock_sqs.receive_message.return_value = {'Messages': messages}
 
     assert sqs_helper.receive_messages(dlq_url, max_message_count) == messages
-    mock_sqs.receive_message.assert_called_once_with(QueueUrl=dlq_url, MaxNumberOfMessages=max_message_count)
+    mock_sqs.receive_message.assert_called_once_with(QueueUrl=dlq_url, MaxNumberOfMessages=max_message_count,
+                                                     MessageAttributeNames=['All'])
 
 
 def test_receive_messages_more_than_default_max_message(mock_sqs):
@@ -25,7 +26,8 @@ def test_receive_messages_more_than_default_max_message(mock_sqs):
     mock_sqs.receive_message.return_value = {'Messages': messages}
 
     assert sqs_helper.receive_messages(dlq_url, max_message_count) == messages
-    mock_sqs.receive_message.assert_called_once_with(QueueUrl=dlq_url, MaxNumberOfMessages=10)
+    mock_sqs.receive_message.assert_called_once_with(QueueUrl=dlq_url, MaxNumberOfMessages=10,
+                                                     MessageAttributeNames=['All'])
 
 
 def test_get_source_queues(mock_sqs):

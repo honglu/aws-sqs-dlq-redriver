@@ -19,7 +19,8 @@ def receive_messages(queue_url, max_message):
     LOG.info('Receiving messages from queue %s', queue_url)
     receive_message_count = min(max_message, RECEIVE_MESSAGE_MAX_NUMBER_OF_MESSAGES_LIMIT)
     return SQS.receive_message(QueueUrl=queue_url,
-                               MaxNumberOfMessages=receive_message_count)['Messages']
+                               MaxNumberOfMessages=receive_message_count,
+                               MessageAttributeNames=['All'])['Messages']
 
 
 def get_source_queues(queue_url):

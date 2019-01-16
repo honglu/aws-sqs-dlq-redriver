@@ -51,11 +51,15 @@ def _redrive_messages(dlq, source_queues, messages):
     send_message_entries = []
     delete_message_entries = []
     for message in messages:
-        send_message_entries.append({
+        send_message_entry = {
             'Id': message['MessageId'],
-            'MessageBody': message['Body'],
-            'MessageAttributes': message['MessageAttributes']
-        })
+            'MessageBody': message['Body']
+        }
+        if 'MessageAttributes' in message:
+            send_message_entry['MessageAttributes'] = message['MessageAttributes']
+        send_message_entries.append(send_message_entry)
+        LOG.info(send_message_entries)
+
         delete_message_entries.append({
             'Id': message['MessageId'],
             'ReceiptHandle': message['ReceiptHandle']
