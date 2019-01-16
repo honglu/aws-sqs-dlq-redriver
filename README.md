@@ -4,7 +4,7 @@ This serverless app redrives the messages from an SQS DLQ (Dead Letter Queue) ba
 
 ## App Architecture
 
-![App Architecture](https://github.com/luhong/aws-sqs-dlq-redriver/raw/master/images/app-architecture.png)
+![App Architecture](https://github.com/honglu/aws-sqs-dlq-redriver/raw/master/images/app-architecture.png)
 
 1. The app creates a Lambda function that can redrive the messages from an SQS DLQ to its source queues.
 1. The app can redrive given number of messages from any given SQS DLQ to its source queues.
