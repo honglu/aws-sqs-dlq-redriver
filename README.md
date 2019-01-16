@@ -26,10 +26,38 @@ You can use the app to redrive messages from any DLQ. To redrive the messages, y
 
 ### Input
 The SQS DLQ Redriver Lambda accepts the following input:
+```json
+{
+    "DLQUrl": String,
+    "MaxMessageCount": Integer
+}
+```
+* `DLQUrl` (required) - The URL of the DLQ queue.
+* `MaxMessageCount` (required) - Maximum number of messages to process
+
+Example:
+```json
+{
+    "DLQUrl": "https://sqs.us-east-1.amazonaws.com/123456789012/my-dlq",
+    "MaxMessageCount": 100
+}
+```
 
 ### Output
 The SQS DLQ Redriver Lambda returns the following output:
+```json
+{
+    "ProcessedMessageCount": Integer
+}
+```
+* `ProcessedMessageCount` (required) - Number of messages that has been processed
 
+Example:
+```json
+{
+    "ProcessedMessageCount": 100
+}
+```
 ## License Summary
 
 This code is made available under the MIT license. See the LICENSE file.
