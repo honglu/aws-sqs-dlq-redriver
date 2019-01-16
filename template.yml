@@ -12,8 +12,8 @@ Metadata:
     ReadmeUrl: ../../README.md
     Labels: [serverless, SQS]
     HomePageUrl: https://github.com/honglu/aws-sqs-dlq-redriver
-    SemanticVersion: 1.0.0
-    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.0.0
+    SemanticVersion: 1.0.1
+    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.0.1
 
 Parameters:
   LogLevel:
