@@ -21,6 +21,15 @@ TODO: arch diagram
 1. `SQSDLQRedriverName` - SQS DLQ Redriver Lambda function name.
 1. `SQSDLQRedriverArn` - SQS DLQ Redriver Lambda function ARN.
 
+## Usage
+You can use the app to redrive messages from any DLQ. To redrive the messages, you will invoke the SQS DLQ Redriver Lambda with the expected input. See [here](https://docs.aws.amazon.com/lambda/latest/dg/invoking-lambda-functions.html) on how to invoke a Lambda function.
+
+### Input
+The SQS DLQ Redriver Lambda accepts the following input:
+
+### Output
+The SQS DLQ Redriver Lambda returns the following output:
+
 ## License Summary
 
 This code is made available under the MIT license. See the LICENSE file.
