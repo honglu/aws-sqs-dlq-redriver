@@ -18,9 +18,13 @@ def receive_messages(queue_url, max_message):
     """
     LOG.info('Receiving messages from queue %s', queue_url)
     receive_message_count = min(max_message, RECEIVE_MESSAGE_MAX_NUMBER_OF_MESSAGES_LIMIT)
-    return SQS.receive_message(QueueUrl=queue_url,
-                               MaxNumberOfMessages=receive_message_count,
-                               MessageAttributeNames=['All'])['Messages']
+    response = SQS.receive_message(QueueUrl=queue_url,
+                                   MaxNumberOfMessages=receive_message_count,
+                                   MessageAttributeNames=['All'])
+    if 'Messages' in response:
+        return response['Messages']
+    else:
+        return []
 
 
 def get_source_queues(queue_url):
@@ -61,3 +65,14 @@ def delete_messages(queue_url, messages):
         raise Exception(
             'Failed to delete messages from queue {}. Failed messages: {}'
             .format(queue_url, delete_message_response['Failed']))
+
+
+def get_queue_url(queue_name):
+    """
+    Get the SQS Queue URL.
+
+    :param queue_name: the queue name of the SQS queue
+    :return: queue URL
+    """
+    LOG.info('Getting queue url from queue %s', queue_name)
+    return SQS.get_queue_url(QueueName=queue_name)['QueueUrl']

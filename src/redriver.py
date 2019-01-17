@@ -8,7 +8,7 @@ import sqs_helper
 
 LOG = lambdalogging.getLogger(__name__)
 RECEIVE_MESSAGE_MAX_NUMBER_OF_MESSAGES_LIMIT = 10
-DLQ_URL_PROPERTY = 'DLQUrl'
+DLQ_NAME_PROPERTY = 'DLQName'
 MAX_MESSAGE_COUNT_PROPERTY = 'MaxMessageCount'
 
 
@@ -16,7 +16,7 @@ def redrive(event, context):
     """Lambda function handler."""
     LOG.info('Received event: %s', event)
     _validate(event)
-    dlq = event[DLQ_URL_PROPERTY]
+    dlq = sqs_helper.get_queue_url(event[DLQ_NAME_PROPERTY])
     max_message_count = event[MAX_MESSAGE_COUNT_PROPERTY]
     source_queues = sqs_helper.get_source_queues(dlq)
     processed_message_count = 0
@@ -35,8 +35,8 @@ def redrive(event, context):
 
 
 def _validate(event):
-    if DLQ_URL_PROPERTY not in event:
-        raise ValueError('{} is missing from event'.format(DLQ_URL_PROPERTY))
+    if DLQ_NAME_PROPERTY not in event:
+        raise ValueError('{} is missing from event'.format(DLQ_NAME_PROPERTY))
     if MAX_MESSAGE_COUNT_PROPERTY not in event:
         raise ValueError('{} is missing from event'.format(MAX_MESSAGE_COUNT_PROPERTY))
     try:

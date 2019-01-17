@@ -19,6 +19,16 @@ def test_receive_messages(mock_sqs):
                                                      MessageAttributeNames=['All'])
 
 
+def test_receive_messages_no_messages(mock_sqs):
+    dlq_url = 'mydlq'
+    max_message_count = 9
+    mock_sqs.receive_message.return_value = {}
+
+    assert sqs_helper.receive_messages(dlq_url, max_message_count) == []
+    mock_sqs.receive_message.assert_called_once_with(QueueUrl=dlq_url, MaxNumberOfMessages=max_message_count,
+                                                     MessageAttributeNames=['All'])
+
+
 def test_receive_messages_more_than_default_max_message(mock_sqs):
     dlq_url = 'mydlq'
     max_message_count = 11
@@ -75,3 +85,12 @@ def test_delete_messages_failed(mock_sqs):
     with pytest.raises(Exception):
         sqs_helper.delete_messages(queue_url, messages)
     mock_sqs.delete_message_batch.assert_called_once_with(QueueUrl=queue_url, Entries=messages)
+
+
+def test_get_queue_url(mock_sqs):
+    queue_name = 'myQueue'
+    queue_url = 'myUrl'
+    mock_sqs.get_queue_url.return_value = {'QueueUrl': queue_url}
+
+    assert sqs_helper.get_queue_url(queue_name) == queue_url
+    mock_sqs.get_queue_url.assert_called_once_with(QueueName=queue_name)

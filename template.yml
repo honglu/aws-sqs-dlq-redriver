@@ -12,8 +12,8 @@ Metadata:
     ReadmeUrl: ../../README.md
     Labels: [serverless, SQS]
     HomePageUrl: https://github.com/honglu/aws-sqs-dlq-redriver
-    SemanticVersion: 1.0.1
-    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.0.1
+    SemanticVersion: 1.1.0
+    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.1.0
 
 Parameters:
   LogLevel:
@@ -43,6 +43,7 @@ Resources:
             - sqs:SendMessage
             - sqs:DeleteMessage
             - sqs:ListDeadLetterSourceQueues
+            - sqs:GetQueueUrl
             Resource: !Sub 'arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:*'
 
 Outputs:

@@ -12,7 +12,7 @@ This serverless app redrives the messages from an SQS DLQ (Dead Letter Queue) ba
 ## Installation Instructions
 
 1. [Create an AWS account](https://portal.aws.amazon.com/gp/aws/developer/registration/index.html) if you do not already have one and login
-1. Go to the app's page on the [Serverless Application Repository](TODO) and click "Deploy"
+1. Go to the app's page on the [Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:303769779339:applications~aws-sqs-dlq-redriver) and click "Deploy"
 1. Provide the required app parameters (see parameter details below) and click "Deploy"
 
 ## App Parameters
@@ -31,7 +31,7 @@ You can use the app to redrive messages from any DLQ. To redrive the messages, y
 The SQS DLQ Redriver Lambda accepts the following input:
 ```json
 {
-    "DLQUrl": String,
+    "DLQName": String,
     "MaxMessageCount": Integer
 }
 ```
@@ -41,7 +41,7 @@ The SQS DLQ Redriver Lambda accepts the following input:
 Example:
 ```json
 {
-    "DLQUrl": "https://sqs.us-east-1.amazonaws.com/123456789012/my-dlq",
+    "DLQName": "my-dlq",
     "MaxMessageCount": 100
 }
 ```

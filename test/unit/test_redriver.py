@@ -15,25 +15,28 @@ def test_missing_dlq_url():
 
 def test_missing_max_message_count():
     with pytest.raises(ValueError):
-        redriver.redrive({'DLQUrl': 'mydlq'}, None)
+        redriver.redrive({'DLQName': 'mydlq'}, None)
 
 
 def test_max_message_count_not_integer():
     with pytest.raises(ValueError):
-        redriver.redrive({'DLQUrl': 'mydlq', 'MaxMessageCount': 'string'}, None)
+        redriver.redrive({'DLQName': 'mydlq', 'MaxMessageCount': 'string'}, None)
 
 
 def test_max_message_count_negative_integer():
     with pytest.raises(ValueError):
-        redriver.redrive({'DLQUrl': 'mydlq', 'MaxMessageCount': -1}, None)
+        redriver.redrive({'DLQName': 'mydlq', 'MaxMessageCount': -1}, None)
 
 
 def test_redrive_no_message(mock_sqs_helper):
-    mock_sqs_helper.receive_messages.return_value = []
+    dlq_name = 'dlqName'
     dlq_url = 'mydlq'
     max_message_count = 10
-    redriver.redrive({'DLQUrl': dlq_url, 'MaxMessageCount': max_message_count}, None)
+    mock_sqs_helper.get_queue_url.return_value = dlq_url
+    mock_sqs_helper.receive_messages.return_value = []
+    redriver.redrive({'DLQName': dlq_name, 'MaxMessageCount': max_message_count}, None)
 
+    mock_sqs_helper.get_queue_url.assert_called_once_with(dlq_name)
     mock_sqs_helper.get_source_queues.assert_called_once_with(dlq_url)
     mock_sqs_helper.receive_messages.assert_called_once_with(dlq_url, max_message_count)
     mock_sqs_helper.send_messages.assert_not_called()
@@ -41,9 +44,11 @@ def test_redrive_no_message(mock_sqs_helper):
 
 
 def test_redrive(mock_sqs_helper):
+    dlq_name = 'dlqName'
     dlq_url = 'mydlq'
     max_message_count = 10
     source_queue = 'mySource'
+    mock_sqs_helper.get_queue_url.return_value = dlq_url
     mock_sqs_helper.get_source_queues.return_value = [source_queue]
     mock_sqs_helper.receive_messages.side_effect = [[{
         'MessageId': 'myId',
@@ -51,8 +56,9 @@ def test_redrive(mock_sqs_helper):
         'MessageAttributes': [],
         'ReceiptHandle': 'myHandle'
     }], []]
-    redriver.redrive({'DLQUrl': dlq_url, 'MaxMessageCount': max_message_count}, None)
+    redriver.redrive({'DLQName': dlq_name, 'MaxMessageCount': max_message_count}, None)
 
+    mock_sqs_helper.get_queue_url.assert_called_once_with(dlq_name)
     mock_sqs_helper.get_source_queues.assert_called_once_with(dlq_url)
     mock_sqs_helper.receive_messages.assert_has_calls([call(dlq_url, max_message_count), call(dlq_url, max_message_count - 1)])
     mock_sqs_helper.send_messages.assert_called_once_with(source_queue, [{
@@ -67,17 +73,20 @@ def test_redrive(mock_sqs_helper):
 
 
 def test_redrive_no_message_attributes(mock_sqs_helper):
+    dlq_name = 'dlqName'
     dlq_url = 'mydlq'
     max_message_count = 10
     source_queue = 'mySource'
+    mock_sqs_helper.get_queue_url.return_value = dlq_url
     mock_sqs_helper.get_source_queues.return_value = [source_queue]
     mock_sqs_helper.receive_messages.side_effect = [[{
         'MessageId': 'myId',
         'Body': 'This is my message',
         'ReceiptHandle': 'myHandle'
     }], []]
-    redriver.redrive({'DLQUrl': dlq_url, 'MaxMessageCount': max_message_count}, None)
+    redriver.redrive({'DLQName': dlq_name, 'MaxMessageCount': max_message_count}, None)
 
+    mock_sqs_helper.get_queue_url.assert_called_once_with(dlq_name)
     mock_sqs_helper.get_source_queues.assert_called_once_with(dlq_url)
     mock_sqs_helper.receive_messages.assert_has_calls([call(dlq_url, max_message_count), call(dlq_url, max_message_count - 1)])
     mock_sqs_helper.send_messages.assert_called_once_with(source_queue, [{
