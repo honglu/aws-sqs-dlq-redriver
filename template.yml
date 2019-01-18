@@ -1,6 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
+Description: This serverless application redrives the messages from an SQS DLQ back to its source SQS queue.
+
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: aws-sqs-dlq-redriver
@@ -12,8 +14,8 @@ Metadata:
     ReadmeUrl: ../../README.md
     Labels: [serverless, SQS]
     HomePageUrl: https://github.com/honglu/aws-sqs-dlq-redriver
-    SemanticVersion: 1.1.0
-    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.1.0
+    SemanticVersion: 1.1.1
+    SourceCodeUrl: https://github.com/honglu/aws-sqs-dlq-redriver/tree/1.1.1
 
 Parameters:
   LogLevel:
