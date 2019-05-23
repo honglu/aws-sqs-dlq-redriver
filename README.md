@@ -1,4 +1,4 @@
-# aws-sqs-dlq-redriver ![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiYys5THI3OU1Pc3BIUjc0TWV2aGRFaG1nVCtCZ1ZHYVJpcWtnUVBqSWU0bEFldkVPd2Y5c1pzQUo0NzVEZlpCZWtMOEp1VVByRmZPT2dpWnVYU3RtMkJNPSIsIml2UGFyYW1ldGVyU3BlYyI6IlluaFA0SERpdWdQaFNFOHQiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+# aws-sqs-dlq-redriver ![Build Status](https://codebuild.us-west-2.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiMlc1THVaV0JpamRtcnhtU2lyc0YyQk9LZDU1eStvWGNQUCtwZVJ0MURaRmdSOFhvY1NKWDI1WTl1YW9vRmVXMUdobWR1QTlWZVJCUnRUUFhGOTBUZWFBPSIsIml2UGFyYW1ldGVyU3BlYyI6InpGa1NSaCt5VG1abXRaV1EiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 This serverless app redrives the messages from an SQS DLQ (Dead Letter Queue) back to its source queue. This is helpful when you fix the bug that was causing the messages ending up in DLQ and you need to put the messages back to process.
 
