@@ -35,7 +35,7 @@ The SQS DLQ Redriver Lambda accepts the following input:
     "MaxMessageCount": Integer
 }
 ```
-* `DLQUrl` (required) - The URL of the DLQ queue.
+* `DLQName` (required) - The name of the DLQ queue.
 * `MaxMessageCount` (required) - Maximum number of messages to process
 
 Example:
